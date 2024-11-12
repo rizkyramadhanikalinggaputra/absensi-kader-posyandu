@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Absensi Kader Posyandu</title>
+    <link rel="icon" href="img/logo.jpg" type="image/x-icon" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 768px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      label {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"],
+      select,
+      input[type="file"] {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      select {
+        width: 30%;
+      }
+
+      input[type="submit"] {
+        padding: 10px 50px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      .nama-kader-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nama-kader-container input {
+        width: 100%;
+      }
+
+      .tambah-nama-kader {
+        padding: 5px 10px;
+        background-color: #2196f3;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+      }
+
+      .tambah-nama-kader:hover {
+        background-color: #0b7dda;
+      }
+
+      .nama-kader-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .nama-kader-item input {
+        flex-grow: 1;
+      }
+
+      .hapus-nama-kader {
+        background-color: transparent;
+        border: none;
+        color: red;
+        cursor: pointer;
+      }
+
+      .hapus-nama-kader:hover {
+        color: darkred;
+      }
+
+      .fa-trash {
+        font-size: 20px;
+        margin-top: 10px;
+      }
+
+      /* input:invalid,
+      select:invalid {
+        border-color: red;
+        background-color: #f8d7da;
+      } */
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        body {
+          padding: 10px;
+          margin: 0 30px 0 10px;
+        }
+
+        input[type="submit"] {
+          font-size: 14px;
+        }
+
+        .tambah-nama-kader {
+          /* padding: 5px 10px; */
+          font-size: 14px;
+          margin-top: 10px;
+        }
+
+        select {
+          width: 35%;
+        }
+
+        option {
+          font-size: 10px;
+        }
+      }
+
+      /* Styling for print page */
+      @media print {
+        body {
+          margin: 0;
+          padding: 0;
+          font-size: 12pt;
+        }
+
+        .print-page {
+          width: 210mm;
+          height: 297mm;
+          padding: 2.54cm;
+          box-sizing: border-box;
+        }
+
+        .image-container img {
+          width: 100%;
+          height: auto;
+        }
+
+        .content {
+          margin-top: 20px;
+        }
+
+        .content p {
+          margin-top: 10px;
+        }
+
+        .ttd-container {
+          margin-top: 30px;
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Absensi Kader Posyandu</h1>
+    <form id="absensiForm">
+      <!-- Input Nama Kader -->
+      <div>
+        <label for="nama_kader">Nama Kader:</label>
+        <div class="nama-kader-container" id="nama_kader_container">
+          <input
+            type="text"
+            id="nama_kader"
+            name="nama_kader[]"
+            placeholder="Masukkan nama kader"
+            required
+          />
+        </div>
+        <button
+          type="button"
+          class="tambah-nama-kader"
+          onclick="tambahNamaKader()"
+        >
+          Tambah Nama Kader
+        </button>
+      </div>
+
+      <!-- Input Ketua Kader -->
+      <div>
+        <label for="ketua_kader">Ketua Kader:</label>
+        <input
+          type="text"
+          id="ketua_kader"
+          name="ketua_kader"
+          placeholder="Masukkan nama ketua kader"
+          required
+        />
+      </div>
+
+      <!-- Input Ketua RT -->
+      <div>
+        <label for="ketua_rt">Ketua RT:</label>
+        <input
+          type="text"
+          id="ketua_rt"
+          name="ketua_rt"
+          placeholder="Masukkan nama ketua RT"
+          required
+        />
+      </div>
+
+      <!-- Pilih Bulan -->
+      <div>
+        <label for="bulan">Pilih Bulan:</label>
+        <select id="bulan" name="bulan" required>
+          <option value="01">Januari</option>
+          <option value="02">Februari</option>
+          <option value="03">Maret</option>
+          <option value="04">April</option>
+          <option value="05">Mei</option>
+          <option value="06">Juni</option>
+          <option value="07">Juli</option>
+          <option value="08">Agustus</option>
+          <option value="09">September</option>
+          <option value="10">Oktober</option>
+          <option value="11">November</option>
+          <option value="12">Desember</option>
+        </select>
+      </div>
+
+      <!-- Upload Foto (Maksimal 5 gambar) -->
+      <div>
+        <label for="foto">Unggah Foto (Max 5 gambar):</label>
+        <input
+          type="file"
+          id="foto"
+          name="foto[]"
+          accept="image/*"
+          multiple
+          required
+          onchange="validateFiles()"
+        />
+        <p id="file-error" style="color: red; display: none">
+          Maksimal 5 gambar.
+        </p>
+      </div>
+
+      <!-- Submit Button -->
+      <input
+        type="submit"
+        value="Buat"
+        onclick="generateAbsensi(); return false;"
+      />
+    </form>
+
+    <!-- Footer -->
+    <footer style="text-align: center; margin-top: 20px; color: #666">
+      <p>&copy; 2024 RRKP. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+      // Set default bulan ke bulan saat ini
+      document.addEventListener("DOMContentLoaded", () => {
+        const bulanSelect = document.getElementById("bulan");
+        const currentMonth = new Date().getMonth() + 1; // bulan dimulai dari 0
+        bulanSelect.value = currentMonth.toString().padStart(2, "0");
+      });
+
+      // Fungsi untuk menambah input nama kader
+      function tambahNamaKader() {
+        const container = document.getElementById("nama_kader_container");
+
+        // Cek apakah jumlah input nama kader sudah 5
+        const inputs = container.querySelectorAll('input[type="text"]');
+        if (inputs.length >= 5) {
+          alert("Maksimal 5 nama kader.");
+          return;
+        }
+
+        const inputBaru = document.createElement("div");
+        inputBaru.classList.add("nama-kader-item");
+
+        // Input Nama Kader
+        const inputField = document.createElement("input");
+        inputField.type = "text";
+        inputField.name = "nama_kader[]";
+        inputField.placeholder = "Masukkan nama kader";
+        inputField.required = true;
+
+        // Tombol Hapus
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.classList.add("hapus-nama-kader");
+        deleteButton.innerHTML = '<i class="fa fa-trash"></i>'; // Menggunakan ikon sampah
+        deleteButton.onclick = () => inputBaru.remove(); // Fungsi untuk menghapus form
+
+        // Menambahkan input dan tombol hapus ke dalam div
+        inputBaru.appendChild(inputField);
+        inputBaru.appendChild(deleteButton);
+
+        container.appendChild(inputBaru);
+      }
+
+      // Validasi file untuk membatasi maksimal 5 gambar
+      function validateFiles() {
+        const fileInput = document.getElementById("foto");
+        const files = fileInput.files;
+        const fileError = document.getElementById("file-error");
+
+        if (files.length > 5) {
+          fileError.style.display = "block";
+          fileInput.setCustomValidity("Maksimal 5 gambar.");
+        } else {
+          fileError.style.display = "none";
+          fileInput.setCustomValidity("");
+        }
+      }
+
+      // Fungsi untuk mendownload halaman sebagai PDF
+      async function generateAbsensi() {
+        const form = document.getElementById("absensiForm");
+        const bulan = document.getElementById("bulan").value;
+        const tahun = new Date().getFullYear();
+        const namaKader = Array.from(
+          form.querySelectorAll("[name='nama_kader[]']")
+        ).map((input) => input.value);
+        const ketuaKader = form.querySelector("#ketua_kader").value;
+        const ketuaRT = form.querySelector("#ketua_rt").value;
+        // const fotoFiles = form.querySelector("#foto").files;
+        const fotoInput = form.querySelector("#foto");
+        const fotoFiles = fotoInput.files;
+        const fileError = document.getElementById("file-error");
+
+        // Periksa validasi form terlebih dahulu
+        let isFormValid = true;
+
+        // Tandai input yang kosong hanya setelah klik OK pada alert
+        form.querySelectorAll("input, select").forEach((input) => {
+          if (!input.value) {
+            input.dataset.empty = "true"; // Menandai elemen dengan data atribut
+          } else {
+            input.dataset.empty = "false";
+          }
+        });
+
+        // Jika ada yang kosong, tampilkan alert dan hentikan proses
+        if (!form.checkValidity()) {
+          event.preventDefault(); // Mencegah form dikirim
+
+          // Menampilkan alert
+          alert("Mohon lengkapi semua informasi yang diperlukan!");
+
+          // Menunggu user klik OK sebelum menandai elemen yang kosong
+          setTimeout(() => {
+            // Tandai elemen yang kosong
+            form.querySelectorAll("input, select").forEach((input) => {
+              if (input.dataset.empty === "true") {
+                input.style.borderColor = "red";
+                input.style.backgroundColor = "#f8d7da";
+              } else {
+                input.style.borderColor = "";
+                input.style.backgroundColor = "";
+              }
+            });
+          }, 0); // Menunggu alert ditutup sebelum menandai
+          return; // Hentikan proses lebih lanjut
+        }
+
+        // Cek apakah gambar yang diupload lebih dari 5
+        if (fotoFiles.length > 5) {
+          alert("Maksimal 5 gambar yang dapat diupload.");
+          // Reset file input jika gambar lebih dari 5
+          fotoInput.value = ""; // Ini akan menghapus file yang dipilih
+          fileError.style.display = "none"; // Menghilangkan pesan error
+          return; // Hentikan proses jika gambar lebih dari 5
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+          format: "a4",
+          unit: "mm",
+        });
+
+        const margin = 25.4;
+        const lebarKertas = 210 - 2 * margin;
+        const maxGambarPerBaris = 3;
+        const lebarGambar =
+          (lebarKertas - (maxGambarPerBaris - 1) * 10) / maxGambarPerBaris;
+        const tinggiGambar = lebarGambar + 15;
+        const jarakAntargambar = 10;
+
+        let xPosition = margin;
+        let yPosition = margin;
+
+        doc.setFont("Times New Roman");
+        doc.setFontSize(12);
+
+        const loadImage = (file) =>
+          new Promise((resolve) => {
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            img.onload = () => resolve(img);
+          });
+
+        for (let index = 0; index < fotoFiles.length; index++) {
+          const img = await loadImage(fotoFiles[index]);
+
+          doc.addImage(
+            img,
+            "JPEG",
+            xPosition,
+            yPosition,
+            lebarGambar,
+            tinggiGambar
+          );
+          xPosition += lebarGambar + jarakAntargambar;
+
+          if ((index + 1) % maxGambarPerBaris === 0) {
+            xPosition = margin;
+            yPosition += tinggiGambar + jarakAntargambar;
+          }
+        }
+
+        const bulanNama = [
+          "Januari",
+          "Februari",
+          "Maret",
+          "April",
+          "Mei",
+          "Juni",
+          "Juli",
+          "Agustus",
+          "September",
+          "Oktober",
+          "November",
+          "Desember",
+        ];
+        const namaBulan = bulanNama[parseInt(bulan, 10) - 1];
+
+        const fixedTextYPosition = 173; // Posisi y tetap untuk teks
+        doc.text(
+          `Absensi kader Bulan ${namaBulan} Tahun ${tahun}`,
+          margin,
+          fixedTextYPosition
+        );
+        let fixedTextYPosition2 = 181;
+
+        namaKader.forEach((kader, index) => {
+          doc.text(`${index + 1}. ${kader}`, margin, fixedTextYPosition2);
+          fixedTextYPosition2 += 8;
+        });
+
+        // yPosition += 50;
+        const fixedTextYPosition3 = 235;
+        doc.text("Ketua Kader", margin + 20, fixedTextYPosition3);
+        const fixedTextYPosition4 = 265;
+        doc.text(`${ketuaKader}`, margin + 20, fixedTextYPosition4);
+
+        yPosition -= 30;
+        doc.text("Ketua RT", 148, fixedTextYPosition3);
+        // yPosition += 30;
+        doc.text(`${ketuaRT}`, 148, fixedTextYPosition4);
+
+        doc.save(`Absensi Kader Posyandu Bulan ${namaBulan} ${tahun}.pdf`);
+      }
+    </script>
+  </body>
+</html>
